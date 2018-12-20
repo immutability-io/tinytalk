@@ -24,6 +24,9 @@ import (
 // Message is the subject to sub/pub to
 var Message string
 
+// Subject is the subject to sub/pub to
+var Subject string
+
 // sayCmd represents the say command
 var sayCmd = &cobra.Command{
 	Use:   "say",
@@ -49,7 +52,13 @@ var sayCmd = &cobra.Command{
 			if err != nil {
 				log.Fatal(err)
 			}
-			subject = PublishChannel + Keybase
+			if Subject != "" {
+				subject = PublishChannel + Subject + "." + Keybase
+			} else {
+				subject = PublishChannel + Keybase
+			}
+		} else if Subject != "" {
+			subject = PublishChannel + Subject
 		}
 		nc.Publish(subject, message)
 		nc.Flush()
@@ -65,6 +74,7 @@ var sayCmd = &cobra.Command{
 func init() {
 	sayCmd.PersistentFlags().StringVarP(&Keybase, "keybase", "k", "", "Keybase identity to encrypt the message with")
 	sayCmd.PersistentFlags().StringVarP(&Message, "message", "m", "", "Message to publish")
+	sayCmd.PersistentFlags().StringVarP(&Subject, "subject", "s", "", "Subject of message")
 	sayCmd.MarkPersistentFlagRequired("message")
 	rootCmd.AddCommand(sayCmd)
 
