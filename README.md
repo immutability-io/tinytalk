@@ -39,7 +39,7 @@ $ tinytalk say -s "boaty" -m "this is what i want to say"
 ```
 
 
-## Send an unencrypted message
+## Send an *encrypted* message
 
 To send a private messages, change to the directory where `tinytalk.creds` reside and run:
 
